@@ -5,7 +5,7 @@ img = imread('test.jpeg');
 rosshutdown;
 rosinit('http://192.168.0.85:11311/');
 %% publisher
-[img_pub, img_msg] = rospublisher('/img','sensor_msgs/Image');
+[img_pub, img_msg] = rospublisher('/img_w_path','sensor_msgs/Image');
 
 %% subscriber
 droid_cam_sub = rossubscriber('/camera/image_raw','DataFormat','struct'); % droid cam node
