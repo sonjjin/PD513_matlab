@@ -28,7 +28,7 @@ msg_coord_ang.Data = refpath.States(:,3);
 send(pub_coord_x, msg_coord_x);
 % send(pub_coord_y, msg_coord_y);
 % send(pub_coord_ang, msg_coord_ang);
-
+AAAA
 
 sub_x = rossubscriber('/coord_x','DataFormat','struct');
 coord_x = receive(sub_x);
