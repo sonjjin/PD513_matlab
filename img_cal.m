@@ -1,26 +1,28 @@
 function img = img_cal(img_droid_cam)
     % close all
-%     img_rgb = imread('images/birdeye_blue.jpg');
+%     img_droid_cam = imread('images/birdeye_blue.jpg');
     % P = impixel(img);
-    
+%     figure(1)
+%     imshow(img_droid_cam)
     img_hsv = rgb2hsv(img_droid_cam);
     img_hsv_h = img_hsv(:,:,1);
     img_hsv_s = img_hsv(:,:,2);
     img_hsv_v = img_hsv(:,:,3);
     % imshow(img_hsv_h)
-    img_hsv_blue = double(zeros(size(img_hsv_h))); 
+    img_hsv_green = double(zeros(size(img_hsv_h))); 
     
-    for i = 1: size(img_hsv_blue, 1)
-        for j = 1:size(img_hsv_blue, 2)
-            if (img_hsv_h(i, j) > 0.6 && img_hsv_h(i, j) < 0.8) && (img_hsv_v(i, j) < 1) && (img_hsv_s(i,j) > 0.4) 
-                img_hsv_blue(i, j) = 1;
+    for i = 1: size(img_hsv_green, 1)
+        for j = 1:size(img_hsv_green, 2)
+            if (img_hsv_h(i, j) > 0.2 && img_hsv_h(i, j) < 0.57) && (img_hsv_v(i, j) < 1) && (img_hsv_s(i,j) > 0.4) 
+                img_hsv_green(i, j) = 1;
             end
         end
     end
     % img_clean = img_hsv_blue;
     SE = strel('square', 5);
-    img_clean = imopen(img_hsv_blue, SE);
-    
+    img_clean = imopen(img_hsv_green, SE);
+    figure(2)
+    imshow(img_clean)
 %     img_rgb_blue = uint8(zeros([size(img_hsv_blue), 3]));
     
     BW = img_clean*255;
@@ -50,15 +52,15 @@ function img = img_cal(img_droid_cam)
     x_lu = min(c);
     x_rl = max(c);
     
-    lu = [x_lu+20, y_lu]';
+    lu = [x_lu, y_lu]';
     ll = [x_lu, y_rl]';
     rl = [x_rl, y_rl]';
     ru = [x_rl, y_lu]';
     
     x_ll = 0;
     y_ll = 0;
-    x_ru = 379;
-    y_ru = 223;
+    x_ru = 443;
+    y_ru = 465;
     target_lu = [x_ll, y_ru]';
     target_ll = [x_ll, y_ll]';
     target_rl = [x_ru, y_ll]';
@@ -69,7 +71,7 @@ function img = img_cal(img_droid_cam)
 %     img_tar = img_rgb(y_lu:y_rl, x_lu:x_rl);
 %     imshow(img_tar)
     H = fitgeotrans(pin',target', 'projective');
-    [Iwarp, reft] = imwarp(img_rgb, H);
+    [Iwarp, reft] = imwarp(img_droid_cam, H);
     
 %     figure(2); imshow(Iwarp)
 %     figure(3); imshow(img_rgb)

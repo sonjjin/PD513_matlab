@@ -43,26 +43,17 @@ send(pub_coord_x, msg_coord_x);
 % end
 %% subscriber
 sub_droid_cam = rossubscriber('/camera/image_raw','DataFormat','struct'); % droid cam node
-sub_accX = rossubscriber('/arduino_imu/accX','DataFormat','struct');
-sub_accY = rossubscriber('/arduino_imu/accY','DataFormat','struct');
-sub_aglX = rossubscriber('/arduino_imu/aglX','DataFormat','struct');
-sub_aglY = rossubscriber('/arduino_imu/aglY','DataFormat','struct');
-sub_aglZ = rossubscriber('/arduino_imu/aglZ','DataFormat','struct');
+% sub_accX = rossubscriber('/arduino_imu/accX','DataFormat','struct');
+% sub_accY = rossubscriber('/arduino_imu/accY','DataFormat','struct');
+% sub_aglX = rossubscriber('/arduino_imu/aglX','DataFormat','struct');
+% sub_aglY = rossubscriber('/arduino_imu/aglY','DataFormat','struct');
+% sub_aglZ = rossubscriber('/arduino_imu/aglZ','DataFormat','struct');
 % 
-% 
-msg_droid_cam = receive(sub_droid_cam, 3);
-img_droid_ori = rosReadImage(msg_droid_cam);
-img_parkinglot = img_cal(img_droid_ori);
+%
 % 
 % imshow(img_droid_ori);
 
-% img_msg = rosmessage(img_pub);
-% 
-% 
-% 
-% img_msg.Encoding = 'rgb8';
-% writeImage(img_msg,img);
-% send(img_pub, img_msg)
+
 
 
 
@@ -93,13 +84,24 @@ z_agl = zeros(3000,1);
 i = 2;
 
 while 1
-    x = receive(sub_accX);
-    y = receive(sub_accY);
-    ax = receive(sub_aglX);
-    ay = receive(sub_aglY);
-    az = receive(sub_aglZ);
-    z_agl(i) = az.Data;
-    z = z_agl(i)-z_agl(i-1);
+    msg_droid_cam = receive(sub_droid_cam);
+    img_droid_ori = rosReadImage(msg_droid_cam);
+    figure(1)
+    imwrite(img_droid_ori,'parkinglot.png')
+    imshow(img_droid_ori)
+    img_parkinglot = img_cal(img_droid_ori);
+    imshow(img_parkinglot)
+    msg_img_w_path = rosmessage(pub_img_w_path);
+    msg_img_w_path.Encoding = 'rgb8';
+    writeImage(msg_img_w_path,img_parkinglot);
+    send(pub_img_w_path, msg_img_w_path)
+%     x = receive(sub_accX);
+%     y = receive(sub_accY);
+%     ax = receive(sub_aglX);
+%     ay = receive(sub_aglY);
+%     az = receive(sub_aglZ);
+%     z_agl(i) = az.Data;
+%     z = z_agl(i)-z_agl(i-1);
 %     x_acc(i) = x.Data;
 %     y_acc(i) = -y.Data;
 %     x_vel(i) = x_acc(i)*dt;
@@ -110,6 +112,7 @@ while 1
 %     plot(i, ax.Data,'.','Color','red')
     hold on
 %     plot(i, ay.Data,'.','Color','blue')
-    plot(i, z,'.','Color','green')
-    i = i+1;
+%     plot(i, z,'.','Color','green')
+%     i = i+1;
+    pause(0.1)
 end
