@@ -1,8 +1,8 @@
-clear
-% close all
+clear all
+close all
 clf
 clc
-load map2.mat
+load map.mat
 figure(4);
 % mesh(Realmap)
 % img = calibration();
@@ -21,9 +21,9 @@ hold on
 planner = plannerHybridAStar(sv,'MinTurningRadius',1.6*th,'MotionPrimitiveLength',0.7*th);
 % planner = plannerRRTStar(validator);
 
-startPose = [3*th 3.6*th pi];
+startPose = [4*th 3.6*th pi];
 plot(startPose(1),startPose(2),'.')
-goalPose = [0.5*th 0.6*th 0]; %%forward: y value:350 // backward: 210 // 290 // 370 yvalue:410
+goalPose = [0.5*th 0.5*th 0]; %%forward: y value:350 // backward: 210 // 290 // 370 yvalue:410
 refpath = plan(planner,startPose,goalPose);     
 % refpath = plan(planner,startPose,goalPose);
 figure(1)

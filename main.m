@@ -3,8 +3,8 @@ close
 clc
 
 rosshutdown;
-% rosinit('http://192.168.0.85:11311/');
-rosinit
+rosinit('http://192.168.0.85:11311/');
+% rosinit
 %%% initialize hybrid A star
 load map2.mat;
 th = 100;
@@ -28,29 +28,31 @@ msg_coord_ang.Data = refpath.States(:,3);
 send(pub_coord_x, msg_coord_x);
 % send(pub_coord_y, msg_coord_y);
 % send(pub_coord_ang, msg_coord_ang);
-AAAA
-
-sub_x = rossubscriber('/coord_x','DataFormat','struct');
-coord_x = receive(sub_x);
-sub_y = rossubscriber('/coord_y','DataFormat','struct');
-coord_y = receive(sub_y);
-sub_ang = rossubscriber('/coord_ang','DataFormat','struct');
 
 
-for i = 1:size(coord_x.Data)
-    plot(coord_x.Data(i),coord_y.Data(i),'.')
-    hold on
-end
-%%% subscriber
-% sub_droid_cam = rossubscriber('/camera/image_raw','DataFormat','struct'); % droid cam node
-% sub_accX = rossubscriber('/arduino_imu/accX','DataFormat','struct');
-% sub_axxY = rossubscriber('/arduino_imu/accY','DataFormat','struct');
-% sub_aglZ = rossubscriber('/arduino_imu/aglZ','DataFormat','struct');
+% sub_x = rossubscriber('/coord_x','DataFormat','struct');
+% coord_x = receive(sub_x);
+% sub_y = rossubscriber('/coord_y','DataFormat','struct');
+% coord_y = receive(sub_y);
+% sub_ang = rossubscriber('/coord_ang','DataFormat','struct');
 % 
 % 
-% droid_cam_msg = receive(droid_cam_sub, 3);
-% img_droid_ori = rosReadImage(droid_cam_msg);
-% img_parkinglot = img_cal(img_droid_cam);
+% for i = 1:size(coord_x.Data)
+%     plot(coord_x.Data(i),coord_y.Data(i),'.')
+%     hold on
+% end
+%% subscriber
+sub_droid_cam = rossubscriber('/camera/image_raw','DataFormat','struct'); % droid cam node
+sub_accX = rossubscriber('/arduino_imu/accX','DataFormat','struct');
+sub_accY = rossubscriber('/arduino_imu/accY','DataFormat','struct');
+sub_aglX = rossubscriber('/arduino_imu/aglX','DataFormat','struct');
+sub_aglY = rossubscriber('/arduino_imu/aglY','DataFormat','struct');
+sub_aglZ = rossubscriber('/arduino_imu/aglZ','DataFormat','struct');
+% 
+% 
+msg_droid_cam = receive(sub_droid_cam, 3);
+img_droid_ori = rosReadImage(msg_droid_cam);
+img_parkinglot = img_cal(img_droid_ori);
 % 
 % imshow(img_droid_ori);
 
@@ -77,10 +79,37 @@ end
 % % msg.Encoding = 'rgb8';
 % % writeImage(msg,img);
 % 
-% while 1
-% 
-% %     img_msg.Encoding = 'rgb8';
-% %     writeImage(img_msg,img);
-% %     send(img_pub, img_msg);
-% %     pause(0.1);
-% end
+figure(1)
+dt = 0.1;
+    % xlim([-10 10]);
+    % ylim([-10 10]);
+x_acc = zeros(5000,1);
+y_acc = zeros(5000,1);
+x_vel = zeros(5000,1); 
+y_vel = zeros(5000,1);
+x_pose = zeros(5000,1);
+y_pose = zeros(5000,1);
+z_agl = zeros(3000,1);
+i = 2;
+
+while 1
+    x = receive(sub_accX);
+    y = receive(sub_accY);
+    ax = receive(sub_aglX);
+    ay = receive(sub_aglY);
+    az = receive(sub_aglZ);
+    z_agl(i) = az.Data;
+    z = z_agl(i)-z_agl(i-1);
+%     x_acc(i) = x.Data;
+%     y_acc(i) = -y.Data;
+%     x_vel(i) = x_acc(i)*dt;
+%     y_vel(i) = y_acc(i)*dt;
+%     x_pose(i) = x_pose(i-1)+x_vel(i-1)*dt+1/2*x_acc(i)*dt*dt;
+%     y_pose(i) = y_pose(i-1)+y_vel(i-1)*dt+1/2*y_acc(i)*dt*dt;
+%     plot(x_pose(i), y_pose(i), '.', 'color', 'r')
+%     plot(i, ax.Data,'.','Color','red')
+    hold on
+%     plot(i, ay.Data,'.','Color','blue')
+    plot(i, z,'.','Color','green')
+    i = i+1;
+end
