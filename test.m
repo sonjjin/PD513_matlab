@@ -1,22 +1,37 @@
 clear
-close
+close all
 clc
-
-rosshutdown;
-rosinit('http://192.249.30.150:11311/');
-node = ros.Node('/test');
-% clear('pub','sub','node')
-clear('master')
-pub = rospublisher('/ctrl_cmd2','std_msgs/Int32');
-sub = rossubscriber('/ctrl_cmd2','std_msgs/Int32','DataFormat','struct');
-while 1
-    i = 0
-    msg = rosmessage(pub);
-    msg.Data = i;
-    send(pub,msg)
-    i = i+1;
-    x = receive(sub, 5);
-    display(x)
-    pause(1)
+load './datas/angle delta.mat'
+vel = 20;
+dt = 0.01;
+X = zeros(400,1);
+Y = zeros(400,1);
+x_t = zeros(400,1);
+y_t = zeros(400,1);
+z_rad_sum = 0;
+f1 = figure('position',[-1080, 721, 560, 420]);
+f2 = figure('position',[-516, 720, 560, 420]);
+f3 = figure('position',[-1078, 212, 560, 420]);
+for i = 1:300
+    z_rad = deg2rad(z(i));
+%     if z_rad < 0.4
+%         z_rad = 0;
+%     end
+    
+    z_rad_sum = z_rad + z_rad_sum;
+    [coord_glo, coord_t] = GeneralLineartransfrom(X(i),Y(i),0,vel,dt,z_rad);
+    X(i+1) = X(i)+coord_t(1);
+    Y(i+1) = Y(i)+coord_t(2);
+    ang = atan2(coord_glo(2), coord_glo(1));
+    x_t(i+1) = x_t(i) + vel*cos(ang)*dt;
+    y_t(i+1) = y_t(i) +vel*sin(ang)*dt;
+    figure(f1)
+    plot(X(i),Y(i),'.','Color',[1, i/350, 0])
+    hold on
+    figure(f2)
+    plot(i, z_rad,'.','Color',[i/350,0,1])
+    hold on
+    figure(f3)
+    plot(x_t(i),y_t(i),'.','color',[0,0.5,i/350])
+    hold on
 end
-sub.LatestMessage

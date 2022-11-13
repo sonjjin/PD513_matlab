@@ -1,14 +1,12 @@
 function img = img_cal(img_droid_cam)
-    % close all
-%     img_droid_cam = imread('images/birdeye_blue.jpg');
-    % P = impixel(img);
+%     close all
+%     img_droid_cam = imread('./images/parkinglot.png');
 %     figure(1)
 %     imshow(img_droid_cam)
     img_hsv = rgb2hsv(img_droid_cam);
     img_hsv_h = img_hsv(:,:,1);
     img_hsv_s = img_hsv(:,:,2);
     img_hsv_v = img_hsv(:,:,3);
-    % imshow(img_hsv_h)
     img_hsv_green = double(zeros(size(img_hsv_h))); 
     
     for i = 1: size(img_hsv_green, 1)
@@ -21,46 +19,30 @@ function img = img_cal(img_droid_cam)
     % img_clean = img_hsv_blue;
     SE = strel('square', 5);
     img_clean = imopen(img_hsv_green, SE);
-    figure(2)
-    imshow(img_clean)
-%     img_rgb_blue = uint8(zeros([size(img_hsv_blue), 3]));
+    img_clean = imbinarize(img_clean);
+%     SE = strel('disk',15);
+%     img_clean = imdilate(img_clean,SE);
+%     f1 = figure('position',[-871 597 814 573]);
+%     figure(f1)
+%     imshow(img_clean)
+%     hold on
     
-    BW = img_clean*255;
-%     figure(1); imshow(img_clean)
-    % dim = size(BW)
+    BW = img_clean;
     [r, c] = find(BW);
-    %  = min(r);
-    % col = min(c);
-    % % col = round(dim(2)/2)-90;
-    % % row = min(find(BW));
-    % boundary = bwtraceboundary(BW,[row, col],'N');
-    % imshow(img_hsv_blue)
-    % hold on;
-    % plot(boundary(:,2),boundary(:,1),'g','LineWidth',3);
+    stats = regionprops('table',BW,'Centroid');
+    centers = round(stats.Centroid);
+%     plot(centers(1,1)-5, centers(1,2)+5, '.', 'Color', 'r')
     
+    ll = [centers(1,1)-5, centers(1,2)+5]';
+    lu = [centers(2,1)-5, centers(2,2)+5]';
+    ru = [centers(3,1), centers(3,2)]';
+    rl = [centers(4,1), centers(4,2)]';
     
-%     for i = 1:size(img_hsv_blue, 1)
-%         for j = 1:size(img_hsv_blue, 2)
-%             if img_clean(i, j) ~= 0
-%                 img_rgb_blue(i, j, :) = img_rgb(i, j, :);
-%             end
-%         end
-%     end
-    % [r,c] = find(img_clean);
-    y_lu = min(r);
-    y_rl = max(r);
-    x_lu = min(c);
-    x_rl = max(c);
-    
-    lu = [x_lu, y_lu]';
-    ll = [x_lu, y_rl]';
-    rl = [x_rl, y_rl]';
-    ru = [x_rl, y_lu]';
-    
+    comp = 10;
     x_ll = 0;
     y_ll = 0;
-    x_ru = 443;
-    y_ru = 465;
+    x_ru = 465 - comp;
+    y_ru = 186 - comp;
     target_lu = [x_ll, y_ru]';
     target_ll = [x_ll, y_ll]';
     target_rl = [x_ru, y_ll]';
@@ -68,21 +50,17 @@ function img = img_cal(img_droid_cam)
     
     pin = [lu, ll, rl, ru];
     target = [target_ll, target_lu, target_ru, target_rl];
-%     img_tar = img_rgb(y_lu:y_rl, x_lu:x_rl);
-%     imshow(img_tar)
     H = fitgeotrans(pin',target', 'projective');
     [Iwarp, reft] = imwarp(img_droid_cam, H);
     
-%     figure(2); imshow(Iwarp)
-%     figure(3); imshow(img_rgb)
-%     hold on
-%     plot(pin(1,:), pin(2,:), '.', 'Color', 'red')
     x = [0 0 1]*H.T;
     x = abs(int32(x));
     % x = x/x(3)
     
-    img = Iwarp(target_ll(2)+x(2)-192:target_ll(2)+target_lu(2)+x(2),target_ll(1)+x(1):target_ll(1)+target_ru(1)+x(1)+9,:);
-%     figure(4); imshow(img)
+    img = Iwarp(target_ll(2)+x(2)-256-comp:target_ll(2)+target_lu(2)+x(2),target_ll(1)+x(1)-comp:target_ll(1)+target_ru(1)+x(1)-1,:);
+%     f2 = figure('position',[-625 -172 627 751]);
+%     figure(f2)
+%     imshow(img)
 %     imwrite(img, 'parkinglot.png')
 %     load('map2.mat');
 %     [r c] = find(Realmap);
