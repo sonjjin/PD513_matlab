@@ -24,7 +24,7 @@ for i = 1:300
     Y(i+1) = Y(i)+coord_t(2);
     ang = atan2(coord_glo(2), coord_glo(1));
     x_t(i+1) = x_t(i) + vel*cos(ang)*dt;
-    y_t(i+1) = y_t(i) +vel*sin(ang)*dt;
+    y_t(i+1) = y_t(i) + vel*sin(ang)*dt;
     figure(f1)
     plot(X(i),Y(i),'.','Color',[1, i/350, 0])
     hold on
