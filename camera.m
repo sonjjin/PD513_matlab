@@ -3,7 +3,7 @@ close
 clc
 
 rosshutdown;
-rosinit('http://172.20.10.3:11311/');
+rosinit('http://192.168.0.85:11311/');
 
 sub_camf = rossubscriber('/front_cam/image_raw','DataFormat','struct');
 sub_caml = rossubscriber('/left_cam/image_raw','DataFormat','struct');

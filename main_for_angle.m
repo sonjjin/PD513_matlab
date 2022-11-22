@@ -6,7 +6,7 @@ rosshutdown;
 rosinit('http://192.168.0.85:11311/');
 % rosinit
 %%% initialize hybrid A star
-load map2.mat;
+load ./datas/map.mat;
 th = 100;
 map = binaryOccupancyMap(Realmap,1);
 ss = stateSpaceSE2;
@@ -72,6 +72,7 @@ sub_aglZ = rossubscriber('/arduino_imu/aglZ','DataFormat','struct');
 % 
     % xlim([-10 10]);
     % ylim([-10 10]);
+vel = 100;
 dt = 0.01;
 X = zeros(400,1);
 Y = zeros(400,1);
@@ -100,13 +101,13 @@ while 1
     x_t(i+1) = x_t(i) + vel*cos(ang)*dt;
     y_t(i+1) = y_t(i) + vel*sin(ang)*dt;
     figure(1)
-    plot(X(i),Y(i),'.','Color',[1, i/350, 0])
+    plot(X(i),Y(i),'.','Color',[1, 1, 0])
     hold on
     figure(2)
-    plot(i, z_rad,'.','Color',[i/350,0,1])
+    plot(i, z_rad,'.','Color',[1,0,1])
     hold on
     figure(3)
-    plot(x_t(i),y_t(i),'.','color',[0,0.5,i/350])
+    plot(x_t(i),y_t(i),'.','color',[0,0.5,1])
     hold on
     
     i = i + 1;

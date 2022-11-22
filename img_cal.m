@@ -12,13 +12,13 @@ function [img, state] = img_cal(img_droid_cam)
     
     for i = 1: size(img_hsv_green, 1)
         for j = 1:size(img_hsv_green, 2)
-            if (img_hsv_h(i, j) > 0.2 && img_hsv_h(i, j) < 0.54) && (img_hsv_v(i, j) < 1) && (img_hsv_s(i,j) > 0.34) 
+            if (img_hsv_h(i, j) > 0.23 && img_hsv_h(i, j) < 0.54) && (img_hsv_v(i, j) < 1) && (img_hsv_s(i,j) > 0.4) 
                 img_hsv_green(i, j) = 1;
             end
         end
     end
 %     img_clean = img_hsv_green;
-    SE = strel('square', 7);
+    SE = strel('square', 10);
 %     SE = strel('square', 4);
     img_clean = imopen(img_hsv_green, SE);
     img_clean = imdilate(img_clean, SE);
@@ -26,7 +26,7 @@ function [img, state] = img_cal(img_droid_cam)
 %     SE = strel('disk',15);
 %     img_clean = imdilate(img_clean,SE);
 %     f1 = figure('position',[-871 597 814 573]);
-    figure(3)
+%     figure(3)
     imshow(img_clean)
 %     hold on
     
@@ -35,7 +35,8 @@ function [img, state] = img_cal(img_droid_cam)
     stats = regionprops('table',BW,'Centroid');
     centers = round(stats.Centroid);
 %     plot(centers(1,1)-5, centers(1,2)+5, '.', 'Color', 'r')
-    check = size(centers);
+    check = size(centers)
+    
     if check(1) == 4
         ll = [centers(1,1)-5, centers(1,2)+5]';
         lu = [centers(2,1)-5, centers(2,2)+5]';

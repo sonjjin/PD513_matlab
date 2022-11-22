@@ -23,7 +23,7 @@ sub_droid_cam = rossubscriber('/camera/image_raw','DataFormat','struct'); % droi
 % sub_aglX = rossubscriber('/arduino_imu/aglX','DataFormat','struct');
 % sub_aglY = rossubscriber('/arduino_imu/aglY','DataFormat','struct');
 % sub_aglZ = rossubscriber('/arduino_imu/aglZ','DataFormat','struct');
-img_old = zeros(443, 465, 3);
+img_old = zeros(443, 465, 3, "uint8");
 %%
 while 1
 %     img_droid_ori = imread('./images/parkinglot.png');
@@ -32,9 +32,13 @@ while 1
     figure(1)
 %     imwrite(img_droid_ori,'parkinglot.png')
     imshow(img_droid_ori)
+    hold on
     img_w_path = hybridAstar(img_droid_ori, img_old);
+%     img_w_path = hybridAstar(img_droid_ori, img_old);
     img_old = img_w_path;
+    figure(4)
     imshow(img_w_path)
+    hold on
     msg_img_w_path = rosmessage(pub_img_w_path);
     msg_img_w_path.Encoding = 'rgb8';
     writeImage(msg_img_w_path,img_w_path);

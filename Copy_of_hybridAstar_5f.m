@@ -15,10 +15,10 @@ function img_w_path = hybridAstar(img_droid_cam, img_old)
     planner = plannerHybridAStar(sv,'MinTurningRadius',1.6*th,'MotionPrimitiveLength',0.7*th);
     % planner = plannerRRTStar(validator);
     
-    startPose = [4*th 3.9*th pi];
+    startPose = [4*th 3.8*th pi];
     figure(3)
     plot(startPose(1),startPose(2),'.')
-    goalPose = [0.4*th 0.1*th pi]; %%forward: y value:350 // backward: 210 // 290 // 370 yvalue:410
+    goalPose = [0.5*th 0.5*th pi]; %%forward: y value:350 // backward: 210 // 290 // 370 yvalue:410
     refpath = plan(planner,startPose,goalPose);     
     % refpath = plan(planner,startPose,goalPose);
     ref_path_ind = ceil(refpath.States(:,1:2));
