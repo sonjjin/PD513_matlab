@@ -18,22 +18,22 @@ function img_w_path = hybridAstar(img_droid_cam, img_old)
     startPose = [4*th 3.9*th pi];
     figure(3)
     plot(startPose(1),startPose(2),'.')
-%     goalPose = [0.4*th 2.3*th pi]; %%forward: y value:350 // backward: 210 // 290 // 370 yvalue:410 1f
+    goalPose = [0.4*th 2.1*th pi]; %%forward: y value:350 // backward: 210 // 290 // 370 yvalue:410 1f
 %     goalPose = [0.4*th 1.4*th pi]; %%forward: y value:350 // backward:
 %     210 // 290 // 370 yvalue:410 2f
-    goalPose = [0.4*th 0.1*th pi]; %%forward: y value:350 // backward:
+%     goalPose = [0.4*th 0.1*th pi]; %%forward: y value:350 // backward:
 %     210 // 290 // 370 yvalue:410 3f
-%     goalPose = [4.4*th 1.2*th 0]; %%forward: y value:350 // backward: 210 // 290 // 370 yvalue:410 4f
-%     goalPose = [4.4*th 0.1*th 0]; %%forward: y value:350 // backward: 210 // 290 // 370 yvalue:410 5f
+%     goalPose = [3.4*th 1.4*th 0]; %%forward: y value:350 // backward: 210 // 290 // 370 yvalue:410 4f
+%     goalPose = [0.4*th 0.1*th pi]; %%forward: y value:350 // backward: 210 // 290 // 370 yvalue:410 5f
     refpath = plan(planner,startPose,goalPose);     
     % refpath = plan(planner,startPose,goalPose);
     ref_path_ind = ceil(refpath.States(:,1:2));
 %     figure(f3)
-%     img_droid_cam = imread('./images/parkinglot.png');
+    img_droid_cam = imread('./images/parkinglot.png');
 
-%    imshow(img_droid_cam)
+   imshow(img_droid_cam)
     [img_no_path, state] = img_cal(img_droid_cam);
-%     imshow(img_no_path)
+    imshow(img_no_path)
     if state == 1
         flip_map = flipud(img_no_path);
         for i = 1:size(ref_path_ind(:,1))
@@ -83,7 +83,7 @@ function img_w_path = hybridAstar(img_droid_cam, img_old)
 %     f2 = figure('position',[-516, 720, 560, 420]);
 %     f3 = figure('position',[-1078, 212, 560, 420]);
 %     figure(f1)
-%     show(map)
+    show(map)
 %     hold on
 %     figure(f2)
     show(planner)

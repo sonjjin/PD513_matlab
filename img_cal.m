@@ -26,7 +26,7 @@ function [img, state] = img_cal(img_droid_cam)
 %     SE = strel('disk',15);
 %     img_clean = imdilate(img_clean,SE);
 %     f1 = figure('position',[-871 597 814 573]);
-%     figure(3)
+    figure(3)
     imshow(img_clean)
 %     hold on
     
