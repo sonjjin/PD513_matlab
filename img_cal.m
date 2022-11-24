@@ -26,8 +26,8 @@ function [img, state] = img_cal(img_droid_cam)
 %     SE = strel('disk',15);
 %     img_clean = imdilate(img_clean,SE);
 %     f1 = figure('position',[-871 597 814 573]);
-    figure(3)
-    imshow(img_clean)
+%     figure(3)
+%     imshow(img_clean)
 %     hold on
     
     BW = img_clean;
@@ -35,7 +35,7 @@ function [img, state] = img_cal(img_droid_cam)
     stats = regionprops('table',BW,'Centroid');
     centers = round(stats.Centroid);
 %     plot(centers(1,1)-5, centers(1,2)+5, '.', 'Color', 'r')
-    check = size(centers)
+    check = size(centers);
     
     if check(1) == 4
         ll = [centers(1,1)-5, centers(1,2)+5]';
