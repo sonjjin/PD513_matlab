@@ -10,7 +10,8 @@ rosinit('http://192.168.0.85:11311/');
 [pub_img_w_path, msg_img_w_path] = rospublisher('/img_w_path','sensor_msgs/Image');
 [pub_coord_x, msg_coord_x] = rospublisher('/coord_x','std_msgs/Float32MultiArray');
 [pub_coord_y, msg_coord_y] = rospublisher('/coord_y','std_msgs/Float32MultiArray');
-[pub_turnpoint, msg_turnpoint] = rospublisher('/coord_y','std_msgs/Float32MultiArray');
+[pub_turnpoint, msg_turnpoint] = rospublisher('/turnpoint','std_msgs/Float32MultiArray');
+[pub_parking_point, msg_parking_point] = rospublisher('/parking_point','std_msgs/Float32MultiArray');
 [pub_coord_ang, msg_coord_ang] = rospublisher('/coord_ang','std_msgs/Float32MultiArray');
 % msg_coord_x.Data = refpath.States(:,1);
 % msg_coord_y.Data = refpath.States(:,2);
@@ -27,6 +28,7 @@ sub_droid_cam = rossubscriber('/camera/image_raw','DataFormat','struct'); % droi
 img_old = zeros(443, 465, 3, "uint8");
 
 %% set the goal position
+    th = 100;
 % [x, y, theta, head] head: 00(10: front, 20: back, 1~5: parkinglot location)
 % forward
 %     goalPose = [0.4*th 2.3*th pi 11]; %%forward: y value:350 // backward: 210 // 290 // 370 yvalue:410 1f
@@ -65,7 +67,9 @@ while 1
     msg_img_w_path.Encoding = 'rgb8';
     writeImage(msg_img_w_path,img_w_path);
     msg_turnpoint.Data = turn_point;
+    msg_parking_point.Data = goalPose(1:2);
     send(pub_turnpoint, msg_turnpoint)
+    send(pub_parking_point, msg_parking_point)
     send(pub_img_w_path, msg_img_w_path)
 
 
