@@ -31,19 +31,17 @@ img_old = zeros(443, 465, 3, "uint8");
     th = 100;
 % [x, y, theta, head] head: 00(10: front, 20: back, 1~5: parkinglot location)
 % forward
-%     goalPose = [0.4*th 2.3*th pi 11]; %%forward: y value:350 // backward: 210 // 290 // 370 yvalue:410 1f
-%     goalPose = [0.4*th 1.4*th pi 12]; %%forward: y value:350 // backward:
-%     210 // 290 // 370 yvalue:410 2f
-%     goalPose = [0.4*th 0.1*th pi 13]; %%forward: y value:350 // backward:
-%     210 // 290 // 370 yvalue:410 3f
-%     goalPose = [4.4*th 1.2*th 0 14]; %%forward: y value:350 // backward: 210 // 290 // 370 yvalue:410 4f
+%    goalPose = [0.2*th 2.4*th pi 11]; %%forward: y value:350 // backward: 210 // 290 // 370 yvalue:410 1f
+%    goalPose = [0.4*th 1.2*th pi 12];
+%    goalPose = [0.4*th 0.1*th pi 13]; %%forward: y value:350 // backward:
+%    goalPose = [4.4*th 1.2*th 0 14]; %%forward: y value:350 // backward: 210 // 290 // 370 yvalue:410 4f
 %     goalPose = [4.4*th 0.1*th 0 15]; %%forward: y value:350 // backward: 210 // 290 // 370 yvalue:410 5f
 
 % backward
 %     goalPose = [0.4*th 2.3*th 0 21]; %%forward: y value:350 // backward: 210 // 290 // 370 yvalue:410 1f
 %     goalPose = [0.4*th 1.4*th 0 22]; %%forward: y value:350 // backward:
 %     210 // 290 // 370 yvalue:410 2f
-    goalPose = [0.4*th 0.1*th 0 23]; %%forward: y value:350 // backward:
+     goalPose = [0.4*th 0.1*th 0 23]; %%forward: y value:350 // backward:
 %     210 // 290 // 370 yvalue:410 3f
 %     goalPose = [4.4*th 1.2*th pi 24]; %%forward: y value:350 // backward: 210 // 290 // 370 yvalue:410 4f
 %     goalPose = [4.4*th 0.1*th pi 25]; %%forward: y value:350 // backward: 210 // 290 // 370 yvalue:410 5f
@@ -57,7 +55,7 @@ while 1
 %     imwrite(img_droid_ori,'parkinglot.png')
     imshow(img_droid_ori)
     hold on
-    [img_w_path, turn_point] = hybridAstar(img_droid_ori, img_old, goalpose);
+    [img_w_path, turn_point] = hybridAstar(img_droid_ori, img_old, goalPose);
 %     img_w_path = hybridAstar(img_droid_ori, img_old);
     img_old = img_w_path;
     figure(4)
