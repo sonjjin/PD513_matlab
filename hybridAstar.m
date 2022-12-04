@@ -17,7 +17,7 @@ function [img_w_path, turn_point] = hybridAstar(img_droid_cam, img_old, goalpose
     % planner = plannerRRTStar(validator);
     
     startPose = [4*th 3.9*th pi];
-%     img_droid_cam = imread('./images/parkinglot.png');
+    img_droid_cam = imread('./images/parkinglot.png');
     [img_no_path, state] = img_cal(img_droid_cam);
 %     figure(3)
 %     plot(startPose(1),startPose(2),'.')
@@ -31,7 +31,7 @@ function [img_w_path, turn_point] = hybridAstar(img_droid_cam, img_old, goalpose
 
 %     goalpose = [0.4*th 2.3*th 0 21];
 %     goalpose = [0.4*th 1.4*th 0 22];
-%     goalpose = [0.4*th 0.1*th 0 23];
+    goalpose = [0.4*th 0.1*th 0 23];
 %     goalpose = [4.3*th 1.0*th pi 24];
 %     goalpose = [4.4*th 0.1*th pi 25];
     goalPose = goalpose(1:3);
@@ -171,17 +171,16 @@ function [img_w_path, turn_point] = hybridAstar(img_droid_cam, img_old, goalpose
     end
 
 %     show fig
-%     f1 = figure('position',[-1080, 721, 560, 420]);
-%     f2 = figure('position',[-516, 720, 560, 420]);
-%     f3 = figure('position',[-1078, 212, 560, 420]);
-%     figure(f1)
-%     show(map)
-%     hold on
-%     figure(f2)
-%     show(planner)
-%     hold on
-%     figure(f3)
-    figure(2)
+    f1 = figure('position',[-1080, 721, 560, 420]);
+    f2 = figure('position',[-516, 720, 560, 420]);
+    f3 = figure('position',[-1078, 212, 560, 420]);
+    figure(f1)
+    show(map)
+    hold on
+    figure(f2)
+    show(planner)
+    hold on
+    figure(f3)
     imshow(img_w_path)
-    
+    size(img_w_path)
 end
