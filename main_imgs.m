@@ -14,8 +14,11 @@ rosinit('http://192.168.0.85:11311/');
 [pub_coord_ang, msg_coord_ang] = rospublisher('/coord_ang','std_msgs/Float32MultiArray');
 
 turn_point = [0, 0; 0, 0; 0, 0];
+msg_turnpoint = rosmessage(pub_turnpoint);
 msg_turnpoint.Data = turn_point;
 msg_turnpoint.Layout.Dim = [ros.msggen.std_msgs.MultiArrayDimension, ros.msggen.std_msgs.MultiArrayDimension];
+msg_turnpoint.Layout.Dim(1).Size = 2;
+msg_turnpoint.Layout.Dim(2).Size = 3;
 %% subscriber
 sub_droid_cam = rossubscriber('/camera/image_raw','DataFormat','struct'); % droid cam node
 img_old = zeros(443, 465, 3, "uint8");
@@ -27,15 +30,15 @@ img_old = zeros(443, 465, 3, "uint8");
 % forward
 %    goalPose = [0.2*th 2.4*th pi 11]; %%forward: y value:350 // backward: 210 // 290 // 370 yvalue:410 1f
 %    goalPose = [0.4*th 1.2*th pi 12];
-   goalPose = [0.4*th 0.1*th pi 13]; %%forward: y value:350 // backward:
+%    goalPose = [0.4*th 0.1*th pi 13]; %%forward: y value:350 // backward:
 %    goalPose = [4.4*th 1.2*th 0 14]; %%forward: y value:350 // backward: 210 // 290 // 370 yvalue:410 4f
 %     goalPose = [4.4*th 0.1*th 0 15]; %%forward: y value:350 // backward: 210 // 290 // 370 yvalue:410 5f
 
 % backward
 %     goalPose = [0.4*th 2.3*th 0 21]; %%forward: y value:350 // backward: 210 // 290 // 370 yvalue:410 1f
-%     goalPose = [0.4*th 1.4*th 0 22]; %%forward: y value:350 // backward:
+ %   goalPose = [0.4*th 1.4*th 0 22]; %%forward: y value:350 // backward:
 %     210 // 290 // 370 yvalue:410 2f
-%      goalPose = [0.4*th 0.1*th 0 23]; %%forward: y value:350 // backward:
+     goalPose = [0.4*th 0.1*th 0 23]; %%forward: y value:350 // backward:
 %     210 // 290 // 370 yvalue:410 3f
 %     goalPose = [4.4*th 1.2*th pi 24]; %%forward: y value:350 // backward: 210 // 290 // 370 yvalue:410 4f
 %     goalPose = [4.4*th 0.1*th pi 25]; %%forward: y value:350 // backward: 210 // 290 // 370 yvalue:410 5f

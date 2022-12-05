@@ -25,13 +25,13 @@ function [img_w_path, turn_point] = hybridAstar(img_droid_cam, img_old, goalpose
 % forward
 %     goalpose = [0.4*th 2.3*th pi 11]; 
 %     goalpose = [0.4*th 1.4*th pi 12]; 
-%     goalpose = [0.4*th 0.1*th pi 13]; 
+     goalpose = [0.4*th 0.1*th pi 13]; 
 %     goalpose = [4.0*th 1.2*th 0 14];
 %     goalpose = [4.4*th 0.1*th 0 15];
 
 %     goalpose = [0.4*th 2.3*th 0 21];
 %     goalpose = [0.4*th 1.4*th 0 22];
-    goalpose = [0.4*th 0.1*th 0 23];
+ %   goalpose = [0.4*th 0.1*th 0 23];
 %     goalpose = [4.3*th 1.0*th pi 24];
 %     goalpose = [4.4*th 0.1*th pi 25];
     goalPose = goalpose(1:3);

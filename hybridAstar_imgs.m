@@ -17,12 +17,13 @@ function [img_w_path1, img_w_path2, img_w_path3, turn_point] = hybridAstar(img_d
     % planner = plannerRRTStar(validator);
     
     startPose = [4*th 3.9*th pi];
-    img_droid_cam = imread('./images/parkinglot.png');
+%     img_droid_cam = imread('./images/parkinglot.png');
     [img_no_path, state] = img_cal(img_droid_cam);
-    [w, h, ~] = size(img_no_path);
-    img_w_path1_temp = zeros([w, h]);
-    img_w_path2_temp = zeros([w, h]);
-    img_w_path3_temp = zeros([w, h]);
+    [w, h, ~] = size(Realmap);
+    img_w_path1_temp = zeros([w, h, 3],'uint8');
+    img_w_path2_temp = zeros([w, h, 3],'uint8');
+    img_w_path3_temp = zeros([w, h, 3],'uint8');
+    size(img_w_path1_temp)
     img_w_path1 = img_w_path1_temp;
     img_w_path2 = img_w_path2_temp;
     img_w_path3 = img_w_path3_temp;
@@ -65,13 +66,13 @@ function [img_w_path1, img_w_path2, img_w_path3, turn_point] = hybridAstar(img_d
         turn_point(3,1) = goalpose(4);
         if state == 1
             for i = 1:size(path_front1_idx(:,1))
-                img_w_path1_temp(path_front1_idx(i,2),path_front1_idx(i,1)) = 255;
+                img_w_path1_temp(path_front1_idx(i,2),path_front1_idx(i,1),:) = 255;
             end
             for i = 1:size(path_front2_idx(:,1))
-                img_w_path2_temp(path_front2_idx(i,2),path_front2_idx(i,1)) = 255;
+                img_w_path2_temp(path_front2_idx(i,2),path_front2_idx(i,1),:) = 255;
             end
             for i = 1:size(path_back_idx(:,1))
-                img_w_path3_temp(path_back_idx(i,2),path_back_idx(i,1)) = 0.6350*255;
+                img_w_path3_temp(path_back_idx(i,2),path_back_idx(i,1),:) = 255;
             end
             img_w_path1 = flipud(img_w_path1_temp);
             img_w_path2 = flipud(img_w_path2_temp);
@@ -79,13 +80,13 @@ function [img_w_path1, img_w_path2, img_w_path3, turn_point] = hybridAstar(img_d
             display('path planning complete')
         else
             for i = 1:size(path_front1_idx(:,1))
-                img_w_path1_temp(path_front1_idx(i,2),path_front1_idx(i,1)) = 255;
+                img_w_path1_temp(path_front1_idx(i,2),path_front1_idx(i,1),:) = 255;
             end
             for i = 1:size(path_front2_idx(:,1))
-                img_w_path2_temp(path_front2_idx(i,2),path_front2_idx(i,1)) = 255;
+                img_w_path2_temp(path_front2_idx(i,2),path_front2_idx(i,1),:) = 255;
             end
             for i = 1:size(path_back_idx(:,1))
-                img_w_path3_temp(path_back_idx(i,2),path_back_idx(i,1)) = 0.6350*255;
+                img_w_path3_temp(path_back_idx(i,2),path_back_idx(i,1),:) = 255;
             end
             img_w_path1 = flipud(img_w_path1_temp);
             img_w_path2 = flipud(img_w_path2_temp);
@@ -101,20 +102,20 @@ function [img_w_path1, img_w_path2, img_w_path3, turn_point] = hybridAstar(img_d
         turn_point(3,1) = goalpose(4);
         if state == 1
             for i = 1:size(path_front1_idx(:,1))
-                img_w_path1_temp(path_front1_idx(i,2),path_front1_idx(i,1)) = 255;
+                img_w_path1_temp(path_front1_idx(i,2),path_front1_idx(i,1),:) = 255;
             end
             for i = 1:size(path_back_idx(:,1))
-                img_w_path2_temp(path_back_idx(i,2),path_back_idx(i,1)) = 255;
+                img_w_path2_temp(path_back_idx(i,2),path_back_idx(i,1),:) = 255;
             end
             img_w_path1 = flipud(img_w_path1_temp);
             img_w_path2 = flipud(img_w_path2_temp);
             display('path planning complete')
         else
             for i = 1:size(path_front1_idx(:,1))
-                img_w_path1_temp(path_front1_idx(i,2),path_front1_idx(i,1)) = 255;
+                img_w_path1_temp(path_front1_idx(i,2),path_front1_idx(i,1),:) = 255;
             end
             for i = 1:size(path_back_idx(:,1))
-                img_w_path2_temp(path_back_idx(i,2),path_back_idx(i,1)) = 255;
+                img_w_path2_temp(path_back_idx(i,2),path_back_idx(i,1),:) = 255;
             end
             img_w_path1 = flipud(img_w_path1_temp);
             img_w_path2 = flipud(img_w_path2_temp);
@@ -125,13 +126,13 @@ function [img_w_path1, img_w_path2, img_w_path3, turn_point] = hybridAstar(img_d
         turn_point(3,1) = goalpose(4);
         if state == 1
             for i = 1:size(ref_path_ind(:,1))
-                img_w_path1_temp(ref_path_ind(i,2),ref_path_ind(i,1)) = 255;
+                img_w_path1_temp(ref_path_ind(i,2),ref_path_ind(i,1),:) = 255;
             end
             img_w_path1 = flipud(img_w_path1_temp);
             display('path planning complete')
         else
             for i = 1:size(ref_path_ind(:,1))
-                img_w_path1_temp(ref_path_ind(i,2),ref_path_ind(i,1)) = 255;
+                img_w_path1_temp(ref_path_ind(i,2),ref_path_ind(i,1),:) = 255;
             end
             img_w_path1 = flipud(img_w_path1_temp);
             display('path planning error')
