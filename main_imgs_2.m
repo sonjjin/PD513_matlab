@@ -19,6 +19,8 @@ msg_turnpoint.Data = turn_point;
 msg_turnpoint.Layout.Dim = [ros.msggen.std_msgs.MultiArrayDimension, ros.msggen.std_msgs.MultiArrayDimension];
 msg_turnpoint.Layout.Dim(1).Size = 2;
 msg_turnpoint.Layout.Dim(2).Size = 3;
+
+iter = 0;
 %% subscriber
 sub_droid_cam = rossubscriber('/camera/image_raw','DataFormat','struct'); % droid cam node
 img_old = zeros(443, 465, 3, "uint8");
@@ -52,7 +54,9 @@ while 1
     figure(1)
 %     imwrite(img_droid_ori,'parkinglot.png')
     imshow(img_droid_ori)
-    [img_w_path1, img_w_path2, img_w_path3, turn_point] = hybridAstar_imgs(img_droid_ori, img_old, goalPose);
+    if iter == 0
+        [img_w_path1, img_w_path2, img_w_path3, turn_point] = hybridAstar_imgs(img_droid_ori, img_old, goalPose);
+    end
 %     img_w_path = hybridAstar(img_droid_ori, img_old);
     img_old = img_w_path1;
     figure(2)
@@ -81,6 +85,6 @@ while 1
     send(pub_img_w_path1, msg_img_w_path1)
     send(pub_img_w_path2, msg_img_w_path2)
     send(pub_img_w_path3, msg_img_w_path3)
-
-
+    
+    iter =+ 1;
 end
